@@ -25,10 +25,11 @@ class _HomeState extends State<Home> {
   int score = 0;
   // to show food position
   var food = 390;
-  var colors = [Colors.green.shade200, Colors.red, Colors.blue];
+  var colors = [Color(0x3f40739e), Colors.red, Colors.blue, Color(0xff3c40c6), Colors.black];
   // initial snake position
   var snake = [250, 251, 252, 253];
   var is_button_pressed = false;
+  bool is_try_again_pressed = false;
   // initial direction of snake when game starts
   Direction d = Direction.right;
   int speed = 250;
@@ -208,7 +209,7 @@ class _HomeState extends State<Home> {
                       itemBuilder: (context, index) {
                         return Container(
                             color: (snake.contains(index)
-                                ? colors[1]
+                                ? ((index == snake.last) ? colors[3] : (index == snake.first ? colors[4] : colors[1]))
                                 : (index == food)
                                     ? colors[2]
                                     : colors[0]));
@@ -217,7 +218,7 @@ class _HomeState extends State<Home> {
               ),
 
               // play ground ends
-              (!is_button_pressed)
+              (!is_button_pressed && !is_try_again_pressed)
                   ? ElevatedButton(
                       onPressed: () {
                         start_game();
@@ -235,10 +236,11 @@ class _HomeState extends State<Home> {
                         food = 390;
                         snake = [250, 251, 252, 253];
                         is_button_pressed = false;
+                        is_try_again_pressed = true;
                         d = Direction.right;
                         speed = 300;
                         is_game_over = false;
-                        setState(() {});
+                        start_game();
                       },
                       child: Text("Play Again", style: TextStyle(fontSize: 20)))
                   : Text("")
